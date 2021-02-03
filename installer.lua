@@ -292,7 +292,7 @@ end
 
 warn("getting latest source from the master branch")
 
-local threadsCompleted = table.create(5, false)
+local threadsCompleted = table.create(6, false)
 
 spawn(function()
 	GitHub:Install(
