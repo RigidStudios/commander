@@ -316,16 +316,20 @@ spawn(function()
 end)
 
 spawn(function()
-	local folder = GitHub:Install("https://github.com/va1kio/commander/tree/main/ui/modules/")
-	for i, v in pairs(folder:GetChildren()) do
-		v.Parent = game:GetService("ServerScriptService").Server.Library.UI.Scripts
-	end
+	local script = GitHub:Install("https://github.com/va1kio/commander/blob/main/ui/Core.client.lua")
+	script.Parent = game:GetService("ServerScriptService").Server.Library.UI.Scripts
+	script.Disabled = true
 	threadsCompleted[4] = true
 end)
 
 spawn(function()
-	loadstring(HttpService:GetAsync("https://github.com/va1kio/commander/blob/main/etc/generatorGuiBrewer.lua"))
+	GitHub:Install("https://github.com/va1kio/commander/tree/main/ui/Library/", game:GetService("ServerScriptService").Server.Library.UI.Scripts.Core)
 	threadsCompleted[5] = true
+end)
+
+spawn(function()
+	loadstring(HttpService:GetAsync("https://github.com/va1kio/commander/blob/main/etc/generatorGuiBrewer.lua"))
+	threadsCompleted[6] = true
 end)
 
 repeat
