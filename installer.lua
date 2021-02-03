@@ -296,14 +296,14 @@ local threadsCompleted = table.create(5, false)
 
 spawn(function()
 	GitHub:Install(
-		"https://github.com/va1kio/commander/blob/version2/server/Server.script.lua",
+		"https://github.com/va1kio/commander/blob/main/server/Server.script.lua",
 		game:GetService("ServerScriptService")
 	)
 	threadsCompleted[1] = true
 end)
 
 spawn(function()
-	local folder = GitHub:Install("https://github.com/va1kio/commander/tree/version2/server/modules/")
+	local folder = GitHub:Install("https://github.com/va1kio/commander/tree/main/server/modules/")
 	for i, v in pairs(folder:GetChildren()) do
 		v.Parent = game:GetService("ServerScriptService").Server
 	end
@@ -311,12 +311,12 @@ spawn(function()
 end)
 
 spawn(function()
-	loadstring(HttpService:GetAsync("https://github.com/va1kio/commander/blob/version2/etc/guiBrewer.lua"))
+	loadstring(HttpService:GetAsync("https://github.com/va1kio/commander/blob/main/etc/guiBrewer.lua"))
 	threadsCompleted[3] = true
 end)
 
 spawn(function()
-	local folder = GitHub:Install("https://github.com/va1kio/commander/tree/version2/ui/modules/")
+	local folder = GitHub:Install("https://github.com/va1kio/commander/tree/main/ui/modules/")
 	for i, v in pairs(folder:GetChildren()) do
 		v.Parent = game:GetService("ServerScriptService").Server.Library.UI.Scripts
 	end
@@ -324,7 +324,7 @@ spawn(function()
 end)
 
 spawn(function()
-	loadstring(HttpService:GetAsync("https://github.com/va1kio/commander/blob/version2/etc/generatorGuiBrewer.lua"))
+	loadstring(HttpService:GetAsync("https://github.com/va1kio/commander/blob/main/etc/generatorGuiBrewer.lua"))
 	threadsCompleted[5] = true
 end)
 
