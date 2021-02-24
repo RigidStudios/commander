@@ -2,8 +2,8 @@
 
 # Commander
 
-[![Generic Badge](https://img.shields.io/badge/Expected_Release-2021-673AB7.svg)]()
+Free & open-sourced administration panel for Roblox, learn more at https://va1kio.github.io/commander-site/
 
-Project have been replanned, this will be the revive of CanaryAdmin, an administration panel solution for Roblox games.
+## What needs to be worked on
 
-![Coming Soon](https://cdn.discordapp.com/attachments/535357742765047818/783273207846535168/Commander_Copy_5.png)
+- An actual Rojo repository
