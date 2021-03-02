@@ -7,7 +7,7 @@ local module = {
 module.Execute = function(Client, Type, Attachment)			
 	if Type == "command" then
 		local player = module.API.getPlayerWithName(Attachment)
-		if player then
+		if player and player.Character then
 			player.Character:BreakJoints()
 		end
 		--[[

@@ -3,15 +3,21 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
+local remotefolder = Instance.new("Folder")
 local availableAdmins = 0 -- In order to reduce server stress, we are caching this value so less API calls will be needed to send the available admins number back to player
 local isPlayerAddedFired = false
 local remotes = {
-	Function = ReplicatedStorage:WaitForChild("Commander Remotes"):WaitForChild("RemoteFunction"),
-	Event = ReplicatedStorage:WaitForChild("Commander Remotes"):WaitForChild("RemoteEvent")
+	Function = Instance.new("RemoteFunction")
+	Event = Instance.new("RemoteEvent")
 }
 local packages = {}
 local packagesButtons = {}
 local systemPackages = {}
+
+remotefolder.Name = "Commander Remotes"
+remotes.Function.Parent, remotes.Event.Parent = remotefolder, remotefolder
+remotefolder.Parent = ReplicatedStroage
+remotefolder = nil
 
 for i,v in pairs(script.Packages:GetChildren()) do
 	if v:IsA("ModuleScript") then
@@ -36,7 +42,7 @@ local function loadPackages()
 			systemPackages[name] = v
 		end
 	end
-	
+
 	for i,v in pairs(systemPackages) do
 		for index, value in pairs(systemPackages) do
 			if systemPackages[index] ~= v and typeof(value) == "table" then
@@ -46,7 +52,7 @@ local function loadPackages()
 			end
 		end
 	end
-	
+
 	for i,v in pairs(script.Packages:GetChildren()) do
 		if v:IsA("ModuleScript") then
 			v = require(v)
@@ -62,15 +68,19 @@ end
 loadPackages()
 
 remotes.Function.OnServerInvoke = function(Client, Type, Protocol, Attachment)
-	if systemPackages.API.checkAdmin(Client) then
+	if systemPackages.API.checkAdmin(Client.UserId) then
 		if Type == "command" and packages[Protocol] then
-			packages[Protocol].Execute(Client, Type, Attachment)
+			coroutine.wrap(function()
+				packages[Protocol].Execute(Client, Type, Attachment)
+			end)()
+			return
 		elseif Type == "input" then
 			-- bindable aren't really good for this, yikes
 			local Event = script.Bindables:FindFirstChild(Protocol)
 			if Event and Attachment ~= false then
 				Event:Fire(Attachment)
-			elseif Attachment == false then
+				Event:Destroy()
+			elseif Event and not Attachment then
 				Event:Destroy()
 			else
 				return false
@@ -85,15 +95,29 @@ remotes.Function.OnServerInvoke = function(Client, Type, Protocol, Attachment)
 	end
 end
 
-Players.PlayerAdded:Connect(function(Client)
-	if systemPackages.API.checkAdmin(Client) then
+local function setupUIForPlayer(Client)
+	local UI = script.Library.Client_UI:Clone()
+	UI.Scripts.Core.Disabled = false
+	UI.Parent = Client.PlayerGui
+	if systemPackages.API.checkAdmin(Client.UserId) then
 		isPlayerAddedFired = true
-		local UI = script.Library.UI:Clone()
+		if systemPackages.Settings.UI["Dark Theme"] then
+			UI = script.Library.Dark_UI:Clone()
+		else
+			UI = script.Library.UI:Clone()
+		end
+		
+		UI.Name = "UI"
 		UI.Scripts.Core.Disabled = false
 		UI.Parent = Client.PlayerGui
 		remotes.Event:FireClient(Client, "fetchCommands", "n/a", packagesButtons)
+		remotes.Event:FireClient(Client, "firstRun", "n/a", systemPackages.Settings.UI)
 		availableAdmins = systemPackages.API.getAvailableAdmins()
 	end
+end
+
+Players.PlayerAdded:Connect(function(Client)
+	setupUIForPlayer(Client)
 end)
 
 Players.PlayerRemoving:Connect(function(Client)
@@ -103,12 +127,6 @@ end)
 -- for situations where PlayerAdded will not work as expected in Studio
 if not isPlayerAddedFired then
 	for i,v in pairs(Players:GetPlayers()) do
-		if systemPackages.API.checkAdmin(v) then
-			local UI = script.Library.UI:Clone()
-			UI.Scripts.Core.Disabled = false
-			UI.Parent = v.PlayerGui
-			remotes.Event:FireClient(v, "fetchCommands", "n/a", packagesButtons)
-			availableAdmins = systemPackages.API.getAvailableAdmins()
-		end
+		setupUIForPlayer(v)
 	end
 end
