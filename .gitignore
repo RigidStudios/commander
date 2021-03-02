@@ -1,7 +1,11 @@
-# Project place file
+# Project place/model file
 /Commander.rbxlx
 /Commander.rbxm
 
 # Roblox Studio lock files
 /*.rbxlx.lock
 /*.rbxl.lock
+
+# DS_STORE files
+*.DS_Store
+.DS_Store
