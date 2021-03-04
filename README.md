@@ -3,3 +3,5 @@
 # Commander
 
 Free & open-sourced administration panel for Roblox, learn more at https://va1kio.github.io/commander-site/
+
+Devforum: https://devforum.roblox.com/t/dp2-commander-easy-to-use-administration-panel/503290/
