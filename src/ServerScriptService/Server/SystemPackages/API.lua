@@ -1,8 +1,9 @@
-local module = {}
-local t = {}
 local TextService = game:GetService("TextService")
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
+
+local module = {}
+local t = {}
 
 function module.sendModalToPlayer(Player, Title)
 	local Bindable = Instance.new("BindableEvent")
@@ -95,6 +96,12 @@ function module.getAvailableAdmins()
 	end
 	
 	return availableAdmins
+end
+
+function module.getCharacter(Player)
+	if Player.Character and Player.Character.PrimaryPart and Player.Character:FindFirstChildOfClass("Humanoid") then
+		return Player.Character
+	end
 end
 
 coroutine.wrap(function()
