@@ -1,6 +1,7 @@
 local TextService = game:GetService("TextService")
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
+local GroupService = game:GetService("GroupService")
 
 local module = {}
 local t = {}
@@ -40,7 +41,7 @@ function module.doThisToPlayers(Client, Player, Callback)
 	end
 end
 
-function module.getPlayerWithName(Player: string)
+function module.getPlayerWithName(Player)
 	for i,v in pairs(Players:GetPlayers()) do
 		if v.Name:lower() == Player:lower() then
 			return v
@@ -48,7 +49,7 @@ function module.getPlayerWithName(Player: string)
 	end
 end
 
-function module.getUserIdWithName(Player: string)
+function module.getUserIdWithName(Player)
 	local success, result = pcall(Players.GetUserIdFromNameAsync, Players, Player)
 	return result
 end
@@ -69,11 +70,40 @@ end
 function module.checkAdmin(ClientId)
 	for i,v in pairs(module.Settings.Admins) do
 		if typeof(v) == "string" then
-			-- We will assume that it is an username
-			-- Name changes ruin the admin permission thing, so we will get the UserID
-			local success, result = pcall(Players.GetUserIdFromNameAsync, Players, v)
-			if success and ClientId == result then
-				return true
+			if v:match("(%d+):([<>]?)(%d+)") then
+				-- Group setting.
+				-- Formatted as groupId:[<>]?rankId.
+				-- "<" / ">" signifies if the user rank should be
+				-- less than or greater than the rank (inclusive).
+				-- If no "<" or ">" is provided it must be an exact match.
+				local groupId, condition, rankId = v:match("(%d+):([<>]?)(%d+)");
+				local playerGroups = GroupService:GetGroupsAsync(ClientId) or {};
+				local selectedGroup;
+
+				for x,y in ipairs(playerGroups) do
+					if y.Id == tonumber(groupId) then
+						selectedGroup = y;
+						break;
+					end
+				end
+
+				-- Player not in group or error occurred with Roblox API.
+				if selectedGroup == nil then
+					return false;
+				end
+
+				local difference = selectedGroup.Rank - tonumber(rankId);
+
+				if (condition == "" and difference == 0)
+				or (condition == ">" and difference >= 0)
+				or (condition == "<" and difference <= 0) then
+					return true;
+				end
+			else
+				local success, result = pcall(Players.GetUserIdFromNameAsync, Players, v)
+				if success and ClientId == result then
+					return true
+				end
 			end
 		elseif typeof(v) == "number" then
 			if ClientId == v then
