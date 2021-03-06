@@ -10,5 +10,5 @@ return {
 		["Dark Theme"] = false
 	},
 	
-	["Version"] = {"DP2 (A1147)", "Developer Preview 2 (A1147)"}
+	["Version"] = {"DP2 (A1148)", "Developer Preview 2 (A1148)"}
 }
