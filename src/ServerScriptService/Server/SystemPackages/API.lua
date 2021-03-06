@@ -6,7 +6,7 @@ local GroupService = game:GetService("GroupService")
 local module = {}
 local t = {}
 
-function module.sendModalToPlayer(Player, Title)
+function module.sendModalToPlayer(Player: player, Title: string)
 	local Bindable = Instance.new("BindableEvent")
 	local GUID = HttpService:GenerateGUID()
 	Bindable.Name = GUID
@@ -16,11 +16,11 @@ function module.sendModalToPlayer(Player, Title)
 	return Bindable
 end
 
-function module.sendListToPlayer(Player, Title, Attachment)
+function module.sendListToPlayer(Player: player, Title: string, Attachment)
 	module.Remotes.Event:FireClient(Player, "newList", Title, Attachment)
 end
 
-function module.doThisToPlayers(Client, Player, Callback)
+function module.doThisToPlayers(Client: player, Player: player, Callback)
 	if string.lower(Player) == "all" then
 		for i,v in pairs(Players:GetPlayers()) do
 			Callback(v)
@@ -58,7 +58,7 @@ function module.registerPlayerAddedEvent(Function)
 	t[#t + 1] = Function
 end
 
-function module.filterText(From, Content)
+function module.filterText(From: player, Content: string)
 	local success, result = pcall(TextService.FilterStringAsync, TextService, Content, From.UserId)
 	if success and result then
 		return true, result:GetNonChatStringForBroadcastAsync()
@@ -67,7 +67,7 @@ function module.filterText(From, Content)
 	end
 end
 
-function module.checkAdmin(ClientId)
+function module.checkAdmin(ClientId: number)
 	for i,v in pairs(module.Settings.Admins) do
 		if typeof(v) == "string" then
 			if v:match("(%d+):([<>]?)(%d+)") then
@@ -128,7 +128,7 @@ function module.getAvailableAdmins()
 	return availableAdmins
 end
 
-function module.getCharacter(Player)
+function module.getCharacter(Player: player)
 	if Player.Character and Player.Character.PrimaryPart and Player.Character:FindFirstChildOfClass("Humanoid") then
 		return Player.Character
 	end
