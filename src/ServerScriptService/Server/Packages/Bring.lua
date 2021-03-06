@@ -6,10 +6,10 @@ local module = {
 
 module.Execute = function(Client, Type, Attachment)			
 	if Type == "command" then
-		local player = module.API.getPlayerWithName(Attachment)
-		if player then
-			if player.Character and Client.Character then
-				local primaryPart = player.Character.PrimaryPart
+		local char = module.API.getCharacter(module.API.getPlayerWithName(Attachment))
+		if char then
+			if Client.Character then
+				local primaryPart = char.PrimaryPart
 				local primaryPart2 = Client.Character.PrimaryPart
 				if primaryPart and primaryPart2 then
 					primaryPart.CFrame = primaryPart2.CFrame

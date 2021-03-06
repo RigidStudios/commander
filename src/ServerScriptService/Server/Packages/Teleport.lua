@@ -6,14 +6,14 @@ local module = {
 
 module.Execute = function(Client, Type, Attachment)			
 	if Type == "command" then
-		local player = module.API.getPlayerWithName(Attachment)
-		if player then
+		local char = module.API.getCharacter(module.API.getPlayerWithName(Attachment))
+		if char then
 			module.API.sendModalToPlayer(Client).Event:Connect(function(Input)
 				if Input ~= false then
-					local player2 = module.API.getPlayerWithName(Input)
-					if player2.Character then
-						local primaryPart = player.Character.PrimaryPart
-						local primaryPart2 = player2.Character.PrimaryPart
+					local char1 = module.API.getCharacter(module.API.getPlayerWithName(Input))
+					if char1 then
+						local primaryPart = char.PrimaryPart
+						local primaryPart2 = char2.PrimaryPart
 						if primaryPart and primaryPart2 then
 							primaryPart.CFrame = primaryPart2.CFrame
 						end

@@ -1,22 +1,15 @@
 local module = {
 	Name = "Kill",
-	Description = "Kills a player with the BreakJoints method",
+	Description = "Kills a player with the Humanoid method",
 	Location = "Player",
 }
 
 module.Execute = function(Client, Type, Attachment)			
 	if Type == "command" then
-		local player = module.API.getPlayerWithName(Attachment)
-		if player and player.Character then
-			player.Character:BreakJoints()
+		local char = module.API.getCharacter(module.API.getPlayerWithName(Attachment))
+		if char then
+			char.Humanoid.Health = 0
 		end
-		--[[
-		module.API.sendModalToPlayer(Client).Event:Connect(function(Input)
-			if Input ~= false then
-				
-			end
-		end)
-		--]]
 	end
 end
 
