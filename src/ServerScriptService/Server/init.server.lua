@@ -6,7 +6,7 @@ local Players = game:GetService("Players")
 
 local remotefolder = Instance.new("Folder")
 local availableAdmins = 0 -- In order to reduce server stress, we are caching this value so less API calls will be needed to send the available admins number back to player
-local isDataStoreEnabled = ({pcall(function() DataStoreService:GetDataStore("_"):GetAsync("_")})[2] ~= "502: API Services rejected request with error. HTTP 403 (Forbidden)"
+local isDataStoreEnabled = ({pcall(function() DataStoreService:GetDataStore("_"):GetAsync("_")end)})[2] ~= "502: API Services rejected request with error. HTTP 403 (Forbidden)"
 
 if isDataStoreEnabled then
 	local isPlayerAddedFired = false
