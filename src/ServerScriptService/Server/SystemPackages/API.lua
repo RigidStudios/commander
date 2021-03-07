@@ -49,6 +49,22 @@ function module.getPlayerWithName(Player: string)
 	end
 end
 
+function module.getPlayerWithNamePartial(Player: string)
+	for i,v in ipairs(Players:GetPlayers()) do
+		if v.Name:sub(1, #Player):lower() == Player:lower() then
+			return v;
+		end
+	end
+end
+
+function module.getPlayerWithFilter(filter: (Instance) -> boolean)
+	for i,v in ipairs(Players:GetPlayers()) do
+		if filter(v) == true then
+			return v;
+		end
+	end
+end
+
 function module.getUserIdWithName(Player: string)
 	local success, result = pcall(Players.GetUserIdFromNameAsync, Players, Player)
 	return result
