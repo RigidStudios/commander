@@ -3,14 +3,14 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
-local datastoreEnabled = ({pcall(function()game:GetService("DatastoreService"):GetDataStore("_"):GetAsync("_")end)})[2] ~= "502: API Services rejected request with error. HTTP 403 (Forbidden)"
+local datastoreEnabled = ({pcall(function()game:GetService("DataStoreService"):GetDataStore("_"):GetAsync("_")end)})[2] ~= "502: API Services rejected request with error. HTTP 403 (Forbidden)"
 
 if datastoreEnabled then
 	local remotefolder = Instance.new("Folder")
 	local availableAdmins = 0 -- In order to reduce server stress, we are caching this value so less API calls will be needed to send the available admins number back to player
 	local isPlayerAddedFired = false
 	local remotes = {
-		Function = Instance.new("RemoteFunction")
+		Function = Instance.new("RemoteFunction"),
 		Event = Instance.new("RemoteEvent")
 	}
 	local packages = {}
@@ -19,7 +19,7 @@ if datastoreEnabled then
 	
 	remotefolder.Name = "Commander Remotes"
 	remotes.Function.Parent, remotes.Event.Parent = remotefolder, remotefolder
-	remotefolder.Parent = ReplicatedStroage
+	remotefolder.Parent = ReplicatedStorage
 	remotefolder = nil
 	
 	for i,v in pairs(script.Packages:GetChildren()) do
