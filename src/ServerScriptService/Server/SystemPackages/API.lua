@@ -12,7 +12,7 @@ function module.sendModalToPlayer(Player: player, Title: string)
 	Bindable.Name = GUID
 	module.Remotes.Event:FireClient(Player, "modal", GUID, Title)
 	Bindable.Parent = script.Parent.Parent.Bindables
-	
+
 	return Bindable
 end
 
@@ -59,10 +59,12 @@ function module.registerPlayerAddedEvent(Function)
 end
 
 function module.filterText(From: player, Content: string)
+	warn("LOL")
 	local success, result = pcall(TextService.FilterStringAsync, TextService, Content, From.UserId)
 	if success and result then
 		return true, result:GetNonChatStringForBroadcastAsync()
 	else
+		warn(tostring(result))
 		return false, result
 	end
 end
@@ -95,8 +97,8 @@ function module.checkAdmin(ClientId: number)
 				local difference = selectedGroup.Rank - tonumber(rankId);
 
 				if (condition == "" and difference == 0)
-				or (condition == ">" and difference >= 0)
-				or (condition == "<" and difference <= 0) then
+					or (condition == ">" and difference >= 0)
+					or (condition == "<" and difference <= 0) then
 					return true;
 				end
 			else
@@ -124,7 +126,7 @@ function module.getAvailableAdmins()
 			availableAdmins += 1
 		end
 	end
-	
+
 	return availableAdmins
 end
 

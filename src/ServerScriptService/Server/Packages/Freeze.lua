@@ -6,11 +6,9 @@ local module = {
 
 module.Execute = function(Client, Type, Attachment)			
 	if Type == "command" then
-		local player = module.API.getPlayerWithName(Attachment)
-		if player then
-			if player.Character and player.Character.PrimaryPart then
-				player.Character.PrimaryPart.Anchored = true
-			end
+		local char = module.API.getCharacter(module.API.getPlayerWithName(Attachment))
+		if char and char.PrimaryPart then
+			char.PrimaryPart.Anchored = true
 		end
 	end
 end

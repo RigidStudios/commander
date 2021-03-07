@@ -6,9 +6,9 @@ local module = {
 
 module.Execute = function(Client, Type, Attachment)			
 	if Type == "command" then
-		local player = module.API.getPlayerWithName(Attachment)
-		if player and player.Character:FindFirstChildOfClass("Humanoid") then
-			player.Character:FindFirstChildOfClass("Humanoid").MaxHealth = 0
+		local char = module.API.getCharacter(module.API.getPlayerWithName(Attachment))
+		if char then
+			char.Humanoid.Health = 0
 		end
 	end
 end

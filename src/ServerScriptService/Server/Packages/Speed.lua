@@ -8,12 +8,9 @@ module.Execute = function(Client, Type, Attachment)
 	if Type == "command" then
 		module.API.sendModalToPlayer(Client).Event:Connect(function(Input)
 			if Input ~= false then
-				local player = module.API.getPlayerWithName(Attachment)
-				if player then
-					local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
-					if humanoid then
-						humanoid.WalkSpeed = tonumber(Input)
-					end
+				local char = module.API.getCharacter(module.API.getPlayerWithName(Attachment))
+				if char then
+					char.Humanoid.WalkSpeed = tonumber(Input)
 				end
 			end
 		end)
